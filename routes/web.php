@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BarangController;
 use Illuminate\Support\Facades\Route;
 
 // default route
@@ -13,6 +14,4 @@ Route::get('/about', function () {
 })->name('about');
 
 // barang route
-Route::get('/barang', function () {
-    return view('pages.barang');
-})->name('barang');
+Route::get('/barang', [BarangController::class, 'index'])->name('barang');
