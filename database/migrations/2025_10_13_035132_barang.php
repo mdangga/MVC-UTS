@@ -11,12 +11,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('barang', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_barang');
-            $table->integer('harga');
-            $table->integer('stok');
+        Schema::create('kategori', function (Blueprint $table) {
+            $table->id('id_kategori');
+            $table->string('nama_kategori');
             $table->timestamps();
+        });
+        Schema::create('pemasok', function (Blueprint $table) {
+            $table->id('id_pemasok');
+            $table->string('nama_pemasok');
+            $table->string('kontak');
+            $table->string('alamat');
+            $table->timestamps();
+        });
+        Schema::create('barang', function (Blueprint $table) {
+            $table->id('id_barang');
+            $table->string('nama_barang');
+            $table->integer('stok');
+            $table->integer('harga');
+            $table->unsignedBigInteger('id_kategori');
+            $table->unsignedBigInteger('id_pemasok');
+            $table->timestamps();
+
+            $table->foreign('id_kategori')->references('id_kategori')->on('kategori')->onDelete('cascade');
+            $table->foreign('id_pemasok')->references('id_pemasok')->on('pemasok')->onDelete('cascade');
         });
     }
 
@@ -26,5 +43,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('barang');
+        Schema::dropIfExists('kategori');
+        Schema::dropIfExists('pemasok');
     }
 };

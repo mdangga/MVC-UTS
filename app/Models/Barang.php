@@ -10,6 +10,22 @@ class Barang extends Model
     use HasFactory;
 
     protected $table = 'barang';
+    protected $primaryKey = 'id_barang';
 
-    protected $fillable = ['nama_barang', 'stok', 'harga'];
+    protected $fillable =
+    [
+        'nama_barang',
+        'stok',
+        'harga',
+        'id_kategori',
+        'id_pemasok'
+    ];
+
+    public function kategori(){
+        return $this->belongsTo(Kategori::class, 'id_kategori');
+    }
+
+    public function pemasok(){
+        return $this->belongsTo(Pemasok::class, 'id_pemasok');
+    }
 }
