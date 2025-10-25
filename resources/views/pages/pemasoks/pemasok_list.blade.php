@@ -3,7 +3,8 @@
 @section('title', 'Daftar Pemasok')
 
 @section('content')
-@section('header', 'Pemasok')
+@section('header_title', 'Daftar Pemasok')
+@section('header_description', 'Kelola Inventaris Anda')
 <x-search-komponen route="pemasok.index" placeholder="Cari pemasok..." />
 
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">

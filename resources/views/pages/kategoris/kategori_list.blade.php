@@ -30,8 +30,9 @@
         <!-- Item Cards -->
         @foreach ($kategoris as $kategori)
             <div class="item card-hover glass-effect rounded-2xl shadow-lg overflow-hidden">
+
                 <!-- Item Header -->
-                <div class="p-3 relative bg-gradient-terracotta">
+                <div class="p-5 relative bg-gradient-terracotta">
                     <div
                         class="absolute top-2 right-2 px-2 py-1 rounded-lg text-xs font-bold shadow-md bg-cream text-terracotta">
                         ID: {{ $kategori->id_kategori }}
@@ -39,12 +40,13 @@
                 </div>
 
                 <!-- Item Body -->
-                <div class="p-3 space-y-3">
+                <div class="p-6 space-y-3">
                     <div class="text-center p-2 rounded-xl bg-cream">
-                        <p class="text-xs font-medium opacity-80 text-terracotta">Kategori</p>
-                        <p class="text-sm font-bold text-terracotta truncate">
-                            {{ $kategori->nama_kategori }}
-                        </p>
+                        <div>
+                            <p class="text-xs font-medium opacity-80 text-terracotta">Nama Kategori</p>
+                            <p class="text-lg font-bold text-terracotta">
+                                {{ $kategori->nama_kategori }}</p>
+                        </div>
                     </div>
                 </div>
 
@@ -55,7 +57,6 @@
                         <span>Edit</span>
                         <i class="fas fa-pen-to-square ml-2 text-xs"></i>
                     </a>
-
                     <button onclick="confirmDelete({{ $kategori->id_kategori }})"
                         class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-xl shadow-md hover:scale-105 active:scale-95 transition-all duration-300 text-white bg-red-500">
                         <i class="fas fa-trash mr-2"></i>
