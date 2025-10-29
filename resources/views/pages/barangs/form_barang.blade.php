@@ -6,9 +6,12 @@
 
 @section('content')
 @section('header_title', $isEdit ? 'Edit Barang' : 'Tambah Barang')
-@section('header_description', $isEdit ? 'Perbarui informasi barang Anda' : 'Masukkan informasi barang baru
+@section('header_description',
+    $isEdit
+    ? 'Perbarui informasi barang Anda'
+    : 'Masukkan informasi barang baru
     Anda')
-    <div class="min-h-screen bg-gradient-custom flex items-center justify-center">
+    <div class="bg-gradient-custom flex ">
         <div class="w-full max-w-7xl">
             <!-- Form Container -->
             <div class="glass-effect rounded-3xl shadow-2xl overflow-hidden">
