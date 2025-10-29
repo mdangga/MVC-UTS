@@ -35,7 +35,7 @@
                 <div class="p-5 relative bg-gradient-terracotta">
                     <div
                         class="absolute top-2 right-2 px-2 py-1 rounded-lg text-xs font-bold shadow-md bg-cream text-terracotta">
-                        ID: {{ $kategori->id_kategori }}
+                        ID: {{ $loop->iteration + ($kategoris->currentPage() - 1) * $kategoris->perPage() }}
                     </div>
                 </div>
 

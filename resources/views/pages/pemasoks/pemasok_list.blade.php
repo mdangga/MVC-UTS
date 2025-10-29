@@ -34,7 +34,7 @@
                 <div class="p-3 relative bg-gradient-terracotta">
                     <div
                         class="absolute top-2 right-2 px-2 py-1 rounded-lg text-xs font-bold shadow-md bg-cream text-terracotta">
-                        ID: {{ $pemasok->id_pemasok }}
+                        ID: {{ $loop->iteration + ($pemasoks->currentPage() - 1) * $pemasoks->perPage() }}
                     </div>
                     <div class="pr-12">
                         <h3 class="text-base font-bold text-white mb-1 truncate">
