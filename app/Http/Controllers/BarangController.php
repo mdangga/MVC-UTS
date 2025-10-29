@@ -17,19 +17,20 @@ class BarangController extends Controller
     {
         $search = $request->input('search');
         $perPage = (int) $request->input('per_page', 5);
-        $allowedPerPage = [5, 10, 25, 50, 100];
+        $allowed = [5, 10, 25, 50, 100];
 
-        if (!in_array($perPage, $allowedPerPage)) {
+        if (!in_array($perPage, $allowed)) {
             $perPage = 5;
         }
 
-        $barangs = Barang::with('pemasok', 'kategori')->when($search, function($q, $search){
+        $barangs = Barang::with('pemasok', 'kategori')->when($search, function ($q, $search) {
             $q->where('nama_barang', 'like', "%{$search}%")
-            ->orWhereHas('kategori', function($q2) use ($search){
-                $q2->where('nama_kategori', 'like', "%{$search}%");
-            })->orWhereHas('pemasok', function($q3) use ($search){
-                $q3->where('nama_pemasok', 'like', "%{$search}%");
-            });
+                ->orWhereHas('kategori', function ($q2) use ($search) {
+                    $q2->where('nama_kategori', 'like', "%{$search}%");
+                })
+                ->orWhereHas('pemasok', function ($q3) use ($search) {
+                    $q3->where('nama_pemasok', 'like', "%{$search}%");
+                });
         })->paginate($perPage)->withQueryString();
 
         return view('pages.barangs.barang_list', compact('barangs'));
@@ -42,7 +43,6 @@ class BarangController extends Controller
     {
         $kategoris = Kategori::all();
         $pemasoks = Pemasok::all();
-
         return view('pages.barangs.form_barang', compact('kategoris', 'pemasoks'));
     }
 
@@ -55,22 +55,19 @@ class BarangController extends Controller
             'nama_barang' => 'required|string|max:255|unique:barang,nama_barang',
             'stok' => 'required|numeric|min:0',
             'harga' => 'required|numeric|min:0',
+            'id_pemasok' => 'required|exists:pemasok,id_pemasok',
             'id_kategori' => 'required|exists:kategori,id_kategori',
-            'id_pemasok' => 'nullable|exists:pemasok,id_pemasok'
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput()
-                ->with('message', 'Validasi gagal.');
+            return redirect()->back()->withErrors($validator)->withInput()->with('message', 'Validasi gagal');
         }
 
-        $data = $validator->validated();
+        $data = $validator->validate();
 
         Barang::create($data);
 
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan!');
+        return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan');
     }
 
     /**
@@ -78,10 +75,12 @@ class BarangController extends Controller
      */
     public function show(string $id)
     {
-        $barang = Barang::with('kategori', 'pemasok')->findOrFail($id);
+        $barang = Barang::find($id);
+
         if (!$barang) {
-            return redirect()->route('barang.index')->with('error', 'Barang tidak ditemukan.');
+            return redirect()->route('barang.index')->with('error', 'Barang tidak ditemukan');
         }
+
         return view('pages.barangs.barang_detail', compact('barang'));
     }
 
@@ -90,12 +89,13 @@ class BarangController extends Controller
      */
     public function edit(string $id)
     {
-        $barang = Barang::findOrFail($id);
-        if (!$barang) {
-            return redirect()->route('barang.index')->with('error', 'Barang tidak ditemukan.');
-        }
+        $barang = Barang::find($id);
         $kategoris = Kategori::all();
         $pemasoks = Pemasok::all();
+
+        if (!$barang) {
+            return redirect()->route('barang.index')->with('error', 'Barang tidak ditemukan');
+        }
 
         return view('pages.barangs.form_barang', compact('barang', 'kategoris', 'pemasoks'));
     }
@@ -108,29 +108,26 @@ class BarangController extends Controller
         $barang = Barang::find($id);
 
         if (!$barang) {
-            return redirect()->back()->with('error', 'Barang tidak ditemukan');
+            return redirect()->route('barang.index')->with('error', 'Barang tidak ditemukan');
         }
 
         $validator = Validator::make($request->all(), [
-            'nama_barang' => 'required|string|max:255|unique:barang,nama_barang,'.$barang->id_barang.',id_barang',
+            'nama_barang' => 'required|string|max:255|unique:barang,nama_barang,' . $barang->id_barang. ',id_barang',
             'stok' => 'required|numeric|min:0',
             'harga' => 'required|numeric|min:0',
+            'id_pemasok' => 'required|exists:pemasok,id_pemasok',
             'id_kategori' => 'required|exists:kategori,id_kategori',
-            'id_pemasok' => 'nullable|exists:pemasok,id_pemasok'
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput()
-                ->with('message', 'Validasi gagal.');
+            return redirect()->back()->withErrors($validator)->withInput()->with('message', 'Validasi gagal');
         }
 
-        $data = $validator->validated();
+        $data = $validator->validate();
 
         $barang->update($data);
 
-        return redirect()->route('barang.show')->with('success', 'Barang berhasil diperbarui!');
+        return redirect()->route('barang.show', $barang->id_barang)->with('success', 'Barang berhasil diperbarui');
     }
 
     /**
@@ -139,13 +136,13 @@ class BarangController extends Controller
     public function destroy(string $id)
     {
         $barang = Barang::find($id);
-        
+
         if (!$barang) {
-            return redirect()->back()->with('error', 'Barang tidak ditemukan');
+            return redirect()->route('barang.index')->with('error', 'Barang tidak ditemukan');
         }
 
         $barang->delete();
 
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil dihapus!');
+        return redirect()->route('barang.index')->with('success', 'Barang berhasil dihapus');
     }
 }

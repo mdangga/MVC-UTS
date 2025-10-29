@@ -6,7 +6,7 @@
 @section('content')
 @section('header_title', 'Daftar Barang')
 @section('header_description', 'Kelola Inventaris Anda')
-<x-search-komponen route="barang.index" placeholder="Cari barang, kategori, pemasok..."/>
+<x-search-komponen route="barang.index" placeholder="Cari barang, kategori, pemasok..." />
 
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
     @if ($barangs->count())
@@ -35,7 +35,7 @@
                 <div class="p-3 relative bg-gradient-terracotta">
                     <div
                         class="absolute top-2 right-2 px-2 py-1 rounded-lg text-xs font-bold shadow-md bg-cream text-terracotta">
-                        ID: {{ $barang->id_barang }}
+                        ID: {{ $loop->iteration + ($barangs->currentPage() - 1) * $barangs->perPage() }}
                     </div>
                     <div class="pr-12">
                         <h3 class="text-base font-bold text-white mb-1 truncate">

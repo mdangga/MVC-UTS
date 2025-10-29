@@ -29,7 +29,7 @@
 
         <!-- Item Cards -->
         @foreach ($pemasoks as $pemasok)
-            <div class="item card-hover glass-effect rounded-2xl shadow-lg overflow-hidden">
+            <div class="item card-hover glass-effect rounded-2xl shadow-lg overflow-hidden h-sm flex flex-col">
                 <!-- Item Header -->
                 <div class="p-3 relative bg-gradient-terracotta">
                     <div
@@ -52,14 +52,14 @@
                 <div class="p-3 space-y-3">
                     <div class="text-center p-2 rounded-xl bg-cream">
                         <p class="text-xs font-medium opacity-80 text-terracotta">Alamat</p>
-                        <p class="text-sm font-bold text-terracotta truncate">
+                        <p class="text-sm font-bold text-terracotta">
                             {{ $pemasok->alamat }}
                         </p>
                     </div>
                 </div>
 
                 <!-- Item Footer -->
-                <div class="p-3 text-center bg-warm-beige">
+                <div class="p-3 text-center bg-warm-beige mt-auto">
                     <a href="{{ route('pemasok.edit', $pemasok->id_pemasok) }}"
                         class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-xl shadow-md hover:scale-105 active:scale-95 transition-all duration-300 text-white bg-gradient-sage">
                         <span>Edit</span>
